@@ -20,37 +20,37 @@ use super::*;
 #[derive(Clone, Debug, PartialEq)]
 pub struct MdaData {
     /// Barometric pressure, inches of mercury
-    pressure_inches: Option<f64>,
+    pub pressure_inches: Option<f64>,
 
     /// Barometric pressure, barsy
-    pressure_bars: Option<f64>,
+    pub pressure_bars: Option<f64>,
 
     /// Air temperature, degrees C
-    air_temperature: Option<f64>,
+    pub air_temperature: Option<f64>,
 
     /// Water temperature, degrees C
-    water_temperature: Option<f64>,
+    pub water_temperature: Option<f64>,
 
     /// Relative humidity, percent
-    relative_humidity: Option<f64>,
+    pub relative_humidity: Option<f64>,
 
     /// Absolute humidity, percent
-    absolute_humidity: Option<f64>,
+    pub absolute_humidity: Option<f64>,
 
     /// Dew point, degrees C
-    dew_point: Option<f64>,
+    pub dew_point: Option<f64>,
 
     /// wind angle, 0 to 359 degrees, degrees true
-    wind_angle_true: Option<f64>,
+    pub wind_angle_true: Option<f64>,
 
     /// wind angle, 0 to 359 degrees, degrees magnetic
-    wind_angle_magnetic: Option<f64>,
+    pub wind_angle_magnetic: Option<f64>,
 
     /// Wind speed - knots
-    wind_speed_knots: Option<f64>,
+    pub wind_speed_knots: Option<f64>,
 
     /// Wind speed - km/h
-    wind_speed_kmh: Option<f64>,
+    pub wind_speed_kmh: Option<f64>,
 }
 
 // -------------------------------------------------------------------------------------------------
