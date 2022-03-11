@@ -38,7 +38,7 @@ pub struct MwvData {
 
 pub(crate) fn handle(sentence: &str) -> Result<ParsedMessage, ParseError> {
     let split: Vec<&str> = sentence.split(',').collect();
-
+    check_field_count(&split, 5)?;
     Ok(ParsedMessage::Mwv(MwvData {
         wind_angle: pick_number_field(&split, 1)?,
         relative: match pick_string_field(&split, 2).unwrap().as_str() {
@@ -83,6 +83,21 @@ mod test {
             },
             Err(e) => {
                 assert_eq!(e.to_string(), "OK");
+            }
+        }
+    }
+
+    #[test]
+    fn test_parse_mwv_incomplete() {
+        match NmeaParser::new().parse_sentence("$WIMWV,295.4,T,") {
+            Ok(_) => {
+                assert!(false);
+            }
+            Err(ParseError::InvalidSentence(e)) => {
+                assert_eq!(e.to_string(), "Incomplete sentence");
+            }
+            _ => {
+                assert!(false);
             }
         }
     }

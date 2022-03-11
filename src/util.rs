@@ -349,7 +349,7 @@ pub fn parse_valid_utc(
             "Failed to parse Utc Date from y:{} m:{} d:{} h:{} m:{} s:{}",
             year, month, day, hour, min, sec
         )
-        .into()),
+            .into()),
     }
 }
 
@@ -377,9 +377,9 @@ pub(crate) fn parse_latitude_ddmm_mmm(
     if !(byte_string.iter().take(4).all(|c| c.is_ascii_digit())
         && byte_string.get(4) == Some(&b'.')
         && byte_string
-            .get(5)
-            .map(|c| c.is_ascii_digit())
-            .unwrap_or(false))
+        .get(5)
+        .map(|c| c.is_ascii_digit())
+        .unwrap_or(false))
     {
         return Err(format!("Failed to parse latitude (DDMM.MMM) from {}", lat_string).into());
     }
@@ -418,9 +418,9 @@ pub(crate) fn parse_longitude_dddmm_mmm(
     if !(byte_string.iter().take(5).all(|c| c.is_ascii_digit())
         && byte_string.get(5) == Some(&b'.')
         && byte_string
-            .get(6)
-            .map(|c| c.is_ascii_digit())
-            .unwrap_or(false))
+        .get(6)
+        .map(|c| c.is_ascii_digit())
+        .unwrap_or(false))
     {
         return Err(format!(
             "Failed to parse longitude (DDDMM.MMM) from {}",
@@ -488,11 +488,29 @@ pub(crate) fn parse_longitude_m_m(
     }
 }
 
+
+pub(crate) fn check_field_count(split: &Vec<&str>, required_fields: usize) -> Result<(), ParseError> {
+    if split.len() < required_fields {
+        Err(ParseError::InvalidSentence("Incomplete sentence".to_string()))
+    } else {
+        Ok(())
+    }
+}
+
 // -------------------------------------------------------------------------------------------------
 
 #[cfg(test)]
 mod test {
     use super::*;
+
+    #[test]
+    fn test_check_field_count() {
+        let sentence = "$WIMWV,295.4,T,33.3,N,A*1C";
+        let split: Vec<&str> = sentence.split(',').collect();
+        assert_eq!(check_field_count(&split, 6), Ok(()));
+        let expected_error = Err(ParseError::InvalidSentence("Incomplete sentence".to_string()));
+        assert_eq!(check_field_count(&split, 7), expected_error);
+    }
 
     #[test]
     fn test_parse_payload() {

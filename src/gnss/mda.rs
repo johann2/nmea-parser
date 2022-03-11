@@ -49,8 +49,8 @@ pub struct MdaData {
     /// Wind speed - knots
     pub wind_speed_knots: Option<f64>,
 
-    /// Wind speed - km/h
-    pub wind_speed_kmh: Option<f64>,
+    /// Wind speed - m/s
+    pub wind_speed_ms: Option<f64>,
 }
 
 // -------------------------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ pub struct MdaData {
 
 pub(crate) fn handle(sentence: &str) -> Result<ParsedMessage, ParseError> {
     let split: Vec<&str> = sentence.split(',').collect();
-
+    check_field_count(&split, 20)?;
     Ok(ParsedMessage::Mda(MdaData {
         pressure_inches: pick_number_field(&split, 1)?,
         pressure_bars: pick_number_field(&split, 3)?,
@@ -71,7 +71,7 @@ pub(crate) fn handle(sentence: &str) -> Result<ParsedMessage, ParseError> {
         wind_angle_true: pick_number_field(&split, 13)?,
         wind_angle_magnetic: pick_number_field(&split, 15)?,
         wind_speed_knots: pick_number_field(&split, 17)?,
-        wind_speed_kmh: pick_number_field(&split, 17)?,
+        wind_speed_ms: pick_number_field(&split, 19)?,
     }))
 }
 
